@@ -10,6 +10,8 @@ a FastAPI API and a small browser UI. Portfolio MVP for an LLM / AI Engineer rol
 > Hugging Face and locally served open-weight models are configurable adapters.
 > Citation ID validation does not establish factual support or entailment.
 
+![Offline demo with labeled authored notes, citations and workflow trace](demo/screenshot.jpg)
+
 ## Run the first end-to-end demo
 
 Python 3.11–3.13:
