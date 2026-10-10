@@ -1,5 +1,7 @@
 # DeepScholar
 
+[![CI](https://github.com/egorryabushko/deepscholar/actions/workflows/ci.yml/badge.svg)](https://github.com/egorryabushko/deepscholar/actions/workflows/ci.yml)
+
 A research workflow over **arXiv and OpenAlex** with inspectable evidence, page citations,
 a FastAPI API and a small browser UI. Portfolio MVP for an LLM / AI Engineer role.
 
@@ -163,7 +165,8 @@ docker compose up --build
 
 Docker serves the demo on <http://127.0.0.1:8000>. Compose passes `.env` values when supplied.
 Runtime dependencies are locked in `requirements.lock`. CI runs checks and tests on Python
-3.11 and 3.13, builds the runtime image, and checks its health endpoint.
+3.11 and 3.13, builds the runtime image, and verifies its health, static assets,
+and an end-to-end demo response with evidence citations.
 
 Actual local verification and live-integration limitations are recorded in
 [demo/VERIFICATION.md](demo/VERIFICATION.md). A workflow file alone does not mean GitHub CI ran.

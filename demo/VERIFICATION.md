@@ -23,18 +23,21 @@ Date: 2026-10-10 (Europe/Moscow). Environment: macOS, Python 3.13.0.
   the HTML, CSS and JavaScript UI assets are included.
 - The locked development dependencies were accepted by a pip dry run. This was run
   against the installed environment, not a clean Linux container.
+- Published baseline `d5f085c` passed all three GitHub Actions jobs on clean Ubuntu runners:
+  tests on Python **3.11 and 3.13**, and Docker build plus runtime health/research smoke check.
+  Evidence: [CI run #1](https://github.com/egorryabushko/deepscholar/actions/runs/38047963343).
+  Later commits add stronger container response/static-asset assertions; check their own runs.
 
 ## Implemented but not live-verified here
 
 - Hugging Face chat provider and local OpenAI-compatible open-weight model adapter:
   tested using mocked responses. No HF token or running local model server was provided.
   No model inference or provider billing occurred.
-- Dockerfile, Compose and GitHub Actions CI are prepared.
-  **Docker was unavailable on this computer; no container build or runtime test ran locally.**
+- **Docker was unavailable on this computer; container build/runtime verification ran in CI,
+  not locally.** Compose's read-only/capability restrictions have not been runtime-tested here.
 - The public GitHub repository `egorryabushko/deepscholar` was created after local verification.
-  CI has not been verified in this local report; check the current
+  Check the current
   [Actions runs](https://github.com/egorryabushko/deepscholar/actions) for the published commit.
-- Python 3.11 is configured in CI; local tests ran on Python 3.13 only.
 
 ## Limits at this checkpoint
 
@@ -54,8 +57,6 @@ httpx-based test client; they did not cause test failures.
 
 ## Next checkpoint
 
-1. Publish this reviewed baseline and inspect the GitHub Actions runs.
-2. Verify the Docker image build and runtime smoke check in CI.
-3. Configure an available open-weight model, verify a real answer end to end,
+1. Configure an available open-weight model, verify a real answer end to end,
    and evaluate claim support on an independently labeled question set.
-4. Add semantic/hybrid retrieval only after comparing it with this baseline.
+2. Add semantic/hybrid retrieval only after comparing it with this baseline.

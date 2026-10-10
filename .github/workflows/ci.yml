@@ -30,9 +30,25 @@ jobs:
           docker run -d --name scholar -p 127.0.0.1:8000:8000 deepscholar:ci
           for attempt in $(seq 1 20); do
             if curl --fail http://127.0.0.1:8000/health; then
+              curl --fail http://127.0.0.1:8000/static/app.js -o /tmp/deepscholar-app.js
               curl --fail -X POST http://127.0.0.1:8000/api/research \
                 -H 'Content-Type: application/json' \
-                -d '{"question":"How does retrieval augmented generation use external evidence?"}'
+                -d '{"question":"How does retrieval augmented generation use external evidence?"}' \
+                -o /tmp/deepscholar-response.json
+              python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("/tmp/deepscholar-response.json").read_text())
+          assert data["mode"] == "demo"
+          assert data["provider"] == "extractive"
+          assert data["citations"]
+          assert all(c["kind"] == "demo_note" for c in data["citations"])
+          assert data["metrics"]["citation_id_validity"] == 1
+          assert len(data["trace"]) == 5
+          assert Path("/tmp/deepscholar-app.js").stat().st_size > 0
+          print("Container workflow and static assets verified")
+          PY
               exit 0
             fi
             sleep 1
