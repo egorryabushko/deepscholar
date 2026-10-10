@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-10",
+  "scope": "One measured live-search/local-LLM smoke case, not a quality benchmark",
+  "model": "Qwen2.5-1.5B-Instruct Q4_K_M",
+  "runtime": "llama.cpp b11429 (CPU)",
+  "question": "How does retrieval augmented generation use external evidence?",
+  "provider": "local",
+  "mode": "live",
+  "answer": "Retrieval-Augmented Generation (RAG) uses external evidence to enhance the outputs of large language models by integrating relevant information from external knowledge sources. This approach allows users to verify claims against sources, which is particularly important for communities relying on AI as a primary information source but lacking the expertise to independently assess the underlying documents. The appeal of RAG systems is that they provide citations, which can help users verify the accuracy of the information. However, if citations are merely cosmetic, appended after the fact rather than genuinely driving the answer, RAG systems risk creating a false sense of security that could deepen information disparities rather than close them. [S1] [S2] [S3]",
+  "citations": [
+    {
+      "id": "S1",
+      "paper_id": "arxiv:2508.14066v1",
+      "title": "Retrieval-Augmented Generation in Industry: An Interview Study on Use Cases, Requirements, Challenges, and Evaluation",
+      "url": "https://arxiv.org/pdf/2508.14066v1#page=1",
+      "page": 1,
+      "kind": "pdf"
+    },
+    {
+      "id": "S2",
+      "paper_id": "openalex:W4403821520",
+      "title": "Quantifying reliance on external information over parametric knowledge during Retrieval Augmented Generation (RAG) using mechanistic analysis",
+      "url": "https://arxiv.org/pdf/2410.00857#page=1",
+      "page": 1,
+      "kind": "pdf"
+    },
+    {
+      "id": "S3",
+      "paper_id": "arxiv:2606.28358v2",
+      "title": "How Do LLMs Cite? A Mechanistic Interpretation of Attribution in Retrieval-Augmented Generation",
+      "url": "https://arxiv.org/pdf/2606.28358v2#page=2",
+      "page": 2,
+      "kind": "pdf"
+    }
+  ],
+  "trace": [
+    {
+      "name": "plan",
+      "status": "ok",
+      "duration_ms": 0,
+      "detail": "Primary query: retrieval augmented generation use external"
+    },
+    {
+      "name": "search",
+      "status": "ok",
+      "duration_ms": 1,
+      "detail": "3 unique papers; 1 query rounds"
+    },
+    {
+      "name": "extract",
+      "status": "ok",
+      "duration_ms": 798,
+      "detail": "3 PDFs extracted; other evidence explicitly labeled"
+    },
+    {
+      "name": "retrieve",
+      "status": "ok",
+      "duration_ms": 10,
+      "detail": "3 matching BM25 chunks from 139 indexed chunks"
+    },
+    {
+      "name": "synthesize",
+      "status": "ok",
+      "duration_ms": 8454,
+      "detail": "Provider: local; citation ID validity: 1.00"
+    }
+  ],
+  "metrics": {
+    "latency_ms": 9263,
+    "papers_found": 3,
+    "pdf_success_rate": 1,
+    "citation_id_validity": 1,
+    "source_coverage": 1,
+    "evidence_chunks": 3
+  },
+  "warnings": [],
+  "queries": [
+    "retrieval augmented generation use external"
+  ]
+}

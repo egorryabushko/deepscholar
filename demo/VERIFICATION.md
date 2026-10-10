@@ -2,6 +2,10 @@
 
 Date: 2026-10-10 (Europe/Moscow). Environment: macOS, Python 3.13.0.
 
+Later checkpoint: [local model verification](LOCAL-VERIFICATION.md) records a real
+no-paid-API generation run and the expanded 49-test suite. The initial figures below
+remain the historical baseline.
+
 ## Completed and observed
 
 - **42 deterministic tests passed** with **92.77% Python statement coverage**.

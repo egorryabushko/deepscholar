@@ -10,7 +10,7 @@ a FastAPI API and a small browser UI. Portfolio MVP for an LLM / AI Engineer rol
 > Hugging Face and locally served open-weight models are configurable adapters.
 > Citation ID validation does not establish factual support or entailment.
 
-![Offline demo with labeled authored notes, citations and workflow trace](demo/screenshot.jpg)
+![Verified local CPU model run with live paper search, PDF citations and workflow trace](demo/local-screenshot.jpg)
 
 ## Run the first end-to-end demo
 
@@ -109,6 +109,8 @@ No API charges are incurred by local inference; downloads, RAM, CPU, disk and el
 are still required. Scholarly search sends keyword queries to arXiv/OpenAlex; generation
 itself keeps the question and selected evidence on the local machine.
 Set `DEEPSCHOLAR_OFFLINE=true` for a fixed demo corpus with no scholarly network requests.
+The measured CPU smoke run and its limitations are recorded in
+[demo/LOCAL-VERIFICATION.md](demo/LOCAL-VERIFICATION.md).
 
 Provider errors or invalid/missing citation IDs trigger a labeled extractive fallback.
 Paper text is treated as untrusted content in the model prompt. This is a prompt-level
