@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DeepScholar — исследование научных статей с проверяемыми источниками.">
+  <title>DeepScholar · Research workspace</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="DeepScholar, главная">
+      <span class="brandmark" aria-hidden="true">D<span>·</span></span>
+      <span>DeepScholar</span>
+    </a>
+    <div class="topright"><span class="status-dot"></span><span id="mode-label">Подключение…</span><a href="/docs">API ↗</a></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div class="eyebrow">RESEARCH WORKSPACE <span>01 / MVP</span></div>
+      <h1>От вопроса<br>к <em>проверяемым источникам.</em></h1>
+      <p>Соберите научные статьи, найдите релевантные фрагменты<br class="desktop-break"> и проследите, на чём основан каждый ответ.</p>
+    </section>
+    <div class="workspace">
+      <aside class="query-panel">
+        <div class="panel-heading"><span class="step-label">01</span><h2>Ваш вопрос</h2></div>
+        <form id="research-form">
+          <label for="question">Что хотите исследовать?</label>
+          <textarea id="question" name="question" rows="5" minlength="5" maxlength="800" required>How does retrieval augmented generation use external evidence?</textarea>
+          <p class="input-hint">Для базового поиска задавайте вопрос на английском.</p>
+          <div class="form-row">
+            <label for="max-papers">Статей</label>
+            <select id="max-papers" name="max-papers"><option value="3">3</option><option value="4">4</option><option value="6">6</option></select>
+          </div>
+          <fieldset><legend>Источники поиска</legend>
+            <label class="checkbox"><input type="checkbox" name="sources" value="arxiv" checked> arXiv <span>Препринты</span></label>
+            <label class="checkbox"><input type="checkbox" name="sources" value="openalex" checked> OpenAlex <span>Научный граф</span></label>
+          </fieldset>
+          <button id="run-button" class="primary" type="submit"><span>Начать исследование</span><span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="examples"><div class="small-label">ПОПРОБУЙТЕ ВОПРОС</div>
+          <button type="button" data-question="How does retrieval augmented generation use external evidence?">Retrieval augmented generation <span>↗</span></button>
+          <button type="button" data-question="How do reasoning and actions interact in ReAct agents?">Reasoning &amp; acting <span>↗</span></button>
+          <button type="button" data-question="How does corrective retrieval evaluate evidence quality?">Corrective retrieval <span>↗</span></button>
+        </div>
+        <div class="mode-note" id="mode-note">Загружаем конфигурацию…</div>
+      </aside>
+      <section class="results-panel" aria-label="Результаты исследования">
+        <div class="panel-heading"><span class="step-label">02</span><h2>Исследование</h2><span class="result-state" id="result-state">Готов к запуску</span></div>
+        <div id="error" class="error-message" role="alert" hidden></div>
+        <div id="empty-state" class="empty-state">
+          <div class="orbit" aria-hidden="true"><span>✦</span><i></i></div>
+          <h3>Начните с хорошего вопроса</h3>
+          <p>Здесь появятся ответ, фрагменты источников<br>и ход исследования — от поиска до цитирования.</p>
+          <div class="workflow-preview"><span>План</span><b>→</b><span>Поиск</span><b>→</b><span>Фрагменты</span><b>→</b><span>Ответ</span></div>
+        </div>
+        <div id="loading" class="loading" role="status" aria-live="polite" hidden>
+          <span class="spinner" aria-hidden="true"></span><h3>Исследование выполняется</h3>
+          <p>Подбираем источники и проверяем фрагменты.<br>Для живого поиска это может занять до двух минут.</p>
+        </div>
+        <div id="result" hidden>
+          <div class="result-meta"><span id="provider-badge" class="badge"></span><span id="time-label"></span><button id="download" class="text-button" type="button">Скачать JSON ↓</button></div>
+          <h3 class="result-question" id="result-question"></h3>
+          <div id="answer" class="answer"></div>
+          <div id="warnings" class="warnings"></div>
+          <div class="section-title"><h3>Основание ответа</h3><span id="source-count"></span></div>
+          <div id="citations" class="citations"></div>
+          <div class="section-title"><h3>Ход исследования</h3><span>5 этапов</span></div>
+          <ol id="trace" class="trace"></ol>
+          <details class="metrics-details"><summary>Метрики и поисковые запросы</summary><div id="metrics"></div><div class="query-list" id="queries"></div><p>Корректность ID ссылок не доказывает достоверность утверждений.</p></details>
+        </div>
+      </section>
+    </div>
+    <footer><span>DeepScholar / AI research agent</span><span>Источники доступны для самостоятельной проверки.</span></footer>
+  </main>
+</body>
+</html>

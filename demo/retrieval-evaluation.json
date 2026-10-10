@@ -1,0 +1,42 @@
+{
+  "scope": "4 lexical sanity cases over 3 authored demo notes; not a general benchmark",
+  "recall_at_3": 1.0,
+  "mrr_at_3": 1.0,
+  "unrelated_query_abstained": true,
+  "cases": [
+    {
+      "question": "non parametric document index",
+      "gold_paper": "demo:rag",
+      "retrieved": [
+        "demo:rag"
+      ],
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "reasoning actions observations",
+      "gold_paper": "demo:react",
+      "retrieved": [
+        "demo:react"
+      ],
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "corrective evaluates irrelevant passages",
+      "gold_paper": "demo:corrective",
+      "retrieved": [
+        "demo:corrective",
+        "demo:rag"
+      ],
+      "reciprocal_rank": 1.0
+    },
+    {
+      "question": "retrieval generation document provenance",
+      "gold_paper": "demo:rag",
+      "retrieved": [
+        "demo:rag",
+        "demo:corrective"
+      ],
+      "reciprocal_rank": 1.0
+    }
+  ]
+}

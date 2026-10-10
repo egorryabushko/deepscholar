@@ -1,0 +1,35 @@
+{
+  "python": "3.13.0",
+  "checks": {
+    "arxiv": {
+      "status": "passed",
+      "papers": 2,
+      "titles": [
+        "AR-RAG: Autoregressive Retrieval Augmentation for Image Generation",
+        "Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation"
+      ],
+      "ids": [
+        "arxiv:2506.06962v3",
+        "arxiv:2411.18583v1"
+      ]
+    },
+    "openalex": {
+      "status": "passed",
+      "papers": 2,
+      "titles": [
+        "Active Retrieval Augmented Generation",
+        "Corrective Retrieval Augmented Generation"
+      ],
+      "ids": [
+        "openalex:W4389519118",
+        "openalex:W4410705984"
+      ]
+    },
+    "pdf": {
+      "status": "passed",
+      "pages_with_text": 2,
+      "characters": 7452,
+      "url": "https://arxiv.org/pdf/2005.11401"
+    }
+  }
+}

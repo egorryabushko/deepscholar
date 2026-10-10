@@ -1,0 +1,22 @@
+services:
+  deepscholar:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DEEPSCHOLAR_OFFLINE: ${DEEPSCHOLAR_OFFLINE:-true}
+      DEEPSCHOLAR_LLM_PROVIDER: ${DEEPSCHOLAR_LLM_PROVIDER:-extractive}
+      DEEPSCHOLAR_HF_MODEL: ${DEEPSCHOLAR_HF_MODEL:-Qwen/Qwen2.5-7B-Instruct}
+      DEEPSCHOLAR_HF_PROVIDER: ${DEEPSCHOLAR_HF_PROVIDER:-auto}
+      DEEPSCHOLAR_HF_TOKEN: ${DEEPSCHOLAR_HF_TOKEN:-}
+      DEEPSCHOLAR_OPENALEX_API_KEY: ${DEEPSCHOLAR_OPENALEX_API_KEY:-}
+      DEEPSCHOLAR_LLM_BASE_URL: ${DEEPSCHOLAR_LLM_BASE_URL:-http://host.docker.internal:11434/v1}
+      DEEPSCHOLAR_LLM_API_KEY: ${DEEPSCHOLAR_LLM_API_KEY:-}
+      DEEPSCHOLAR_PDF_HOSTS: '${DEEPSCHOLAR_PDF_HOSTS:-["arxiv.org","export.arxiv.org"]}'
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

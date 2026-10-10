@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --require-hashes -r requirements-dev.lock
+      - run: python -m pip install --no-deps -e .
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest --cov-fail-under=80
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t deepscholar:ci .
+      - name: Runtime smoke check
+        run: |
+          docker run -d --name scholar -p 127.0.0.1:8000:8000 deepscholar:ci
+          for attempt in $(seq 1 20); do
+            if curl --fail http://127.0.0.1:8000/health; then
+              curl --fail -X POST http://127.0.0.1:8000/api/research \
+                -H 'Content-Type: application/json' \
+                -d '{"question":"How does retrieval augmented generation use external evidence?"}'
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs scholar
+          exit 1
