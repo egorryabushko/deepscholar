@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     hf_provider: str = "auto"
     llm_base_url: str = "http://localhost:11434/v1"
     llm_api_key: str | None = Field(default=None, repr=False)
+    llm_model: str | None = None
+    max_output_tokens: int = Field(default=900, ge=16, le=2048)
+    evidence_limit: int = Field(default=6, ge=1, le=6)
     openalex_api_key: str | None = Field(default=None, repr=False)
     request_timeout: float = Field(default=20.0, gt=0, le=120)
     llm_timeout: float = Field(default=60.0, gt=0, le=300)

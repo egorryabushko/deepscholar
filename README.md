@@ -76,12 +76,39 @@ Serve an open-weight model with Ollama, vLLM, llama.cpp or TGI, then configure i
 ```dotenv
 DEEPSCHOLAR_LLM_PROVIDER=local
 DEEPSCHOLAR_LLM_BASE_URL=http://localhost:11434/v1
-DEEPSCHOLAR_HF_MODEL=qwen2.5:7b
+DEEPSCHOLAR_LLM_MODEL=qwen2.5:7b
 ```
 
 `DEEPSCHOLAR_LLM_API_KEY` is optional for a protected endpoint. The model server is managed
 separately; this repository does not download weights automatically. From Docker Desktop,
 use `http://host.docker.internal:11434/v1` to reach a host model server.
+
+### No paid API: low-memory CPU profile
+
+For Intel Macs or other CPU-only machines, start with a small instruction model.
+The official [Qwen2.5-1.5B-Instruct GGUF](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF)
+Q4_K_M file is about 1.12 GB. This is a resource-conscious baseline, not a claim that
+a 1.5B model matches larger models in research quality. CPU generation may take minutes.
+
+Download a compatible [llama.cpp release](https://github.com/ggml-org/llama.cpp/releases)
+and the GGUF weights, then run two terminals:
+
+```bash
+# Terminal 1: serve already-downloaded weights (no cloud inference).
+bash scripts/serve-local.sh /path/to/llama-server /path/to/qwen2.5-1.5b-instruct-q4_k_m.gguf
+
+# Terminal 2: copy profiles/local-cpu.env.example to .env after reviewing any existing .env.
+uvicorn deepscholar.app:app --host 127.0.0.1 --port 8000
+```
+
+The profile uses a 4,096-token server context, three evidence chunks, 350 output tokens,
+and a longer request deadline. The browser follows the configured deadline.
+`DEEPSCHOLAR_LLM_MODEL` selects the local server's model; the older `HF_MODEL` setting
+remains a backward-compatible fallback. The model server binds only to loopback.
+No API charges are incurred by local inference; downloads, RAM, CPU, disk and electricity
+are still required. Scholarly search sends keyword queries to arXiv/OpenAlex; generation
+itself keeps the question and selected evidence on the local machine.
+Set `DEEPSCHOLAR_OFFLINE=true` for a fixed demo corpus with no scholarly network requests.
 
 Provider errors or invalid/missing citation IDs trigger a labeled extractive fallback.
 Paper text is treated as untrusted content in the model prompt. This is a prompt-level

@@ -85,7 +85,7 @@ class ResearchWorkflow:
         )
         retrieve_started = time.perf_counter()
         chunks = chunk_papers(papers, texts, self.settings.chunk_chars, self.settings.chunk_overlap)
-        evidence = rank_chunks(request.question, chunks, limit=6)
+        evidence = rank_chunks(request.question, chunks, limit=self.settings.evidence_limit)
         trace.append(
             _step(
                 "retrieve",

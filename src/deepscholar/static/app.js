@@ -3,6 +3,7 @@
 const byId = (id) => document.getElementById(id);
 let latestResult = null;
 let busy = false;
+let requestDeadlineMs = 160000;
 
 function node(tag, text, className) {
   const element = document.createElement(tag);
@@ -106,7 +107,7 @@ async function runResearch(event) {
   byId("loading").hidden = false;
   byId("result-state").textContent = "Выполняется";
   const controller = new AbortController();
-  const deadline = setTimeout(() => controller.abort(), 160000);
+  const deadline = setTimeout(() => controller.abort(), requestDeadlineMs);
   try {
     const response = await fetch("/api/research", {
       method:"POST", headers:{"Content-Type":"application/json"}, signal:controller.signal,
@@ -147,6 +148,12 @@ fetch("/api/config").then((r) => { if (!r.ok) throw new Error("Config unavailabl
   byId("mode-note").textContent = config.mode === "demo"
     ? "Демо на трёх статьях. Фрагменты — авторские заметки, а не оригинальные аннотации. Поиск в интернете выключен."
     : "Поиск arXiv / OpenAlex. Если PDF недоступен, используем аннотацию с явной пометкой.";
+  if (config.provider === "local") {
+    byId("mode-note").textContent += " Модель работает локально: " + config.model + ". Без оплаты API; ответ может занять несколько минут.";
+  }
+  if (Number.isFinite(config.workflow_timeout) && config.workflow_timeout > 0) {
+    requestDeadlineMs = Math.min(config.workflow_timeout + 10, 610) * 1000;
+  }
   [...byId("max-papers").options].forEach((option) => { option.disabled = Number(option.value) > config.max_papers; });
 }).catch(() => {
   byId("mode-label").textContent = "Сервис недоступен";

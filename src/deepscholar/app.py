@@ -49,11 +49,17 @@ def create_app(settings: Settings | None = None, transport: httpx.AsyncBaseTrans
 
     @app.get("/api/config")
     def public_config():
+        selected_model = None
+        if config.llm_provider == "huggingface":
+            selected_model = config.hf_model
+        elif config.llm_provider == "local":
+            selected_model = config.llm_model or config.hf_model
         return {
             "mode": "demo" if config.offline else "live",
             "provider": config.llm_provider,
             "max_papers": config.max_papers,
-            "model": config.hf_model if config.llm_provider != "extractive" else None,
+            "model": selected_model,
+            "workflow_timeout": config.workflow_timeout,
         }
 
     @app.post("/api/research", response_model=ResearchResponse)
