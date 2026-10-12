@@ -134,14 +134,35 @@ document.querySelectorAll("[data-question]").forEach((button) => button.addEvent
   byId("question").value = button.dataset.question;
   byId("question").focus();
 }));
-byId("download").addEventListener("click", () => {
-  if (!latestResult) return;
-  const url = URL.createObjectURL(new Blob([JSON.stringify(latestResult, null, 2)], {type:"application/json"}));
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
   const anchor = node("a");
   anchor.href = url;
-  anchor.download = "deepscholar-research.json";
+  anchor.download = filename;
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+byId("download").addEventListener("click", () => {
+  if (!latestResult) return;
+  downloadBlob(new Blob([JSON.stringify(latestResult, null, 2)], {type:"application/json"}), "deepscholar-research.json");
+});
+byId("download-markdown").addEventListener("click", async () => {
+  if (!latestResult) return;
+  const button = byId("download-markdown");
+  button.disabled = true;
+  try {
+    const response = await fetch("/api/export/markdown", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(latestResult),
+    });
+    if (!response.ok) throw new Error("Не удалось сохранить отчёт. Попробуйте ещё раз.");
+    downloadBlob(await response.blob(), "deepscholar-research.md");
+  } catch (error) {
+    byId("error").textContent = error.message;
+    byId("error").hidden = false;
+  } finally {
+    button.disabled = false;
+  }
 });
 fetch("/api/config").then((r) => { if (!r.ok) throw new Error("Config unavailable"); return r.json(); }).then((config) => {
   byId("mode-label").textContent = config.mode === "demo" ? "Демо-корпус" : "Живой поиск";
