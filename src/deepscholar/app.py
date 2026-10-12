@@ -4,13 +4,14 @@ from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from deepscholar import __version__
 from deepscholar.config import Settings, get_settings
 from deepscholar.connectors.arxiv import ArxivClient
 from deepscholar.connectors.openalex import OpenAlexClient
+from deepscholar.export import render_markdown
 from deepscholar.llm import build_llm
 from deepscholar.models import ResearchRequest, ResearchResponse
 from deepscholar.workflow import ResearchWorkflow
@@ -61,6 +62,14 @@ def create_app(settings: Settings | None = None, transport: httpx.AsyncBaseTrans
             "model": selected_model,
             "workflow_timeout": config.workflow_timeout,
         }
+
+    @app.post("/api/export/markdown", response_class=Response)
+    def export_markdown(result: ResearchResponse):
+        return Response(
+            render_markdown(result),
+            media_type="text/markdown",
+            headers={"Content-Disposition": 'attachment; filename="deepscholar-research.md"'},
+        )
 
     @app.post("/api/research", response_model=ResearchResponse)
     async def research(request: ResearchRequest):
