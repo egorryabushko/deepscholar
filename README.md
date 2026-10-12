@@ -199,6 +199,18 @@ Runtime dependencies are locked in `requirements.lock`. CI runs checks and tests
 3.11 and 3.13, builds the runtime image, and verifies its health, static assets,
 and an end-to-end demo response with evidence citations.
 
+### Export a research report
+
+After a run, click **Скачать отчёт ↓** to download a Markdown report containing the
+answer, citation IDs, evidence excerpts and page numbers, selected papers, warnings,
+queries, workflow trace and measured metrics. The existing JSON download remains available.
+Export reuses the completed result; it does not repeat search or model inference.
+Authored demo notes and abstract fallbacks retain their explicit evidence labels.
+
+API clients can POST an existing `ResearchResponse` JSON to `/api/export/markdown`.
+The endpoint validates its structure and returns a Markdown attachment; it does not
+authenticate or independently verify the supplied research result.
+
 Actual local verification and live-integration limitations are recorded in
 [demo/VERIFICATION.md](demo/VERIFICATION.md). A workflow file alone does not mean GitHub CI ran.
 
